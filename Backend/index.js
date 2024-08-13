@@ -1,6 +1,7 @@
 const express = require('express');
 const randomstring = require('randomstring');
 const mysql = require('mysql2');
+const path = require('path');
 
 
 const app = express();
@@ -10,7 +11,7 @@ app.use(express.json());
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Pm@12345",
+    password: "*****",
     database: "urls_storage"
 });
 
@@ -22,9 +23,12 @@ con.connect(function (error) {
     console.log("Database connected successfully!");
 });
 
-// Serve the frontend
+// Serve static files from the "Frontend" directory
+app.use(express.static(path.join(__dirname, '..', 'Frontend')));
+
 app.get("/", function (request, response) {
-    response.sendFile("C:/Users/Sachin/OneDrive/Desktop/URL_shortener/Frontend/index.html");
+    // Serve the index.html file from the "Frontend" directory
+    response.sendFile(path.join(__dirname, '..', 'Frontend', 'index.html'));
 });
 
 // Shorten URL and store in the database
