@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    tools {
+        nodejs "node"  // Ensure Node.js is installed and configured in Jenkins
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Clone the Git repository specifying the branch
+                    git branch: 'main', url: 'https://github.com/PrinceMaloo/URL_Shortner.git'
+                }
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Change directory and run npm install
+                    dir('Backend') {
+                        bat 'npm install'
+                    }
+                }
+            }
+        }
+        stage('Run Application') {
+            steps {
+                script {
+                    // Run the application
+                    dir('Backend') {
+                        bat 'node index.js'
+                    }
+                }
+            }
+        }
+    }
+}
